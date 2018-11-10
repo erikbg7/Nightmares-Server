@@ -12,14 +12,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-@Api(value = "/objects", description = "Endpoint to Object Service")
-@Path("/objects")
-public class ObjectService {
+@Api(value = "/items", description = "Endpoint to Item Service")
+@Path("/items")
+public class ItemService {
     private GameManager gm;
 
-    public ObjectService() {
+    public ItemService() {
         this.gm = GameManagerImpl.getInstance();
-        if (gm.size()==0) {
+        if (gm.sizeItems()==0) {
             this.gm.addItem(0, "AK-47", 1, 10, 10, 0);
             this.gm.addItem(1, "P90", 1, 17, 15, 0);
             this.gm.addItem(2, "SCAR", 1, 30, 9, 0);
@@ -27,7 +27,7 @@ public class ObjectService {
     }
 
     @GET
-    @ApiOperation(value = "get all Item", notes = "asdasd")
+    @ApiOperation(value = "get all Items", notes = "asdasd")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful", response = Item.class, responseContainer="List"),
     })
@@ -35,7 +35,7 @@ public class ObjectService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getItems() {
 
-        List<Item> items = this.gm.findAll();
+        List<Item> items = this.gm.findAllItems();
 
         GenericEntity<List<Item>> entity = new GenericEntity<List<Item>>(items) {};
         return Response.status(201).entity(entity).build()  ;

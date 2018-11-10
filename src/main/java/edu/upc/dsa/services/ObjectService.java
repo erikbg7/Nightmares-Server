@@ -15,94 +15,88 @@ import java.util.List;
 @Api(value = "/objects", description = "Endpoint to Object Service")
 @Path("/objects")
 public class ObjectService {
-    private TracksManager tm;
-
     private GameManager gm;
 
     public ObjectService() {
-        this.tm = TracksManagerImpl.getInstance();
-        if (tm.size()==0) {
-            this.tm.addTrack("La Barbacoa", "Georgie Dann");
-            this.tm.addTrack("Despacito", "Luis Fonsi");
-            this.tm.addTrack("Enter Sandman", "Metallica");
-        }
-
         this.gm = GameManagerImpl.getInstance();
-
-
+        if (gm.size()==0) {
+            this.gm.addItem(0, "AK-47", 1, 10, 10, 0);
+            this.gm.addItem(1, "P90", 1, 17, 15, 0);
+            this.gm.addItem(2, "SCAR", 1, 30, 9, 0);
+        }
     }
 
     @GET
-    @ApiOperation(value = "get all Track", notes = "asdasd")
+    @ApiOperation(value = "get all Item", notes = "asdasd")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = Track.class, responseContainer="List"),
+            @ApiResponse(code = 201, message = "Successful", response = Item.class, responseContainer="List"),
     })
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTracks() {
+    public Response getItems() {
 
-        List<Track> tracks = this.tm.findAll();
+        List<Item> items = this.gm.findAll();
 
-        GenericEntity<List<Track>> entity = new GenericEntity<List<Track>>(tracks) {};
+        GenericEntity<List<Item>> entity = new GenericEntity<List<Item>>(items) {};
         return Response.status(201).entity(entity).build()  ;
 
     }
 
     @GET
-    @ApiOperation(value = "get a Track", notes = "asdasd")
+    @ApiOperation(value = "get a Item", notes = "asdasd")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = Track.class),
-            @ApiResponse(code = 404, message = "Track not found")
+            @ApiResponse(code = 201, message = "Successful", response = Item.class),
+            @ApiResponse(code = 404, message = "Item not found")
     })
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTrack(@PathParam("id") int id) {
-        Track t = this.tm.getTrack(id);
+    public Response getItem(@PathParam("id") int id) {
+        Item t = this.gm.getItem(id);
         if (t == null) return Response.status(404).build();
         else  return Response.status(201).entity(t).build();
     }
 
     @DELETE
-    @ApiOperation(value = "delete a Track", notes = "asdasd")
+    @ApiOperation(value = "delete a Item", notes = "asdasd")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful"),
-            @ApiResponse(code = 404, message = "Track not found")
+            @ApiResponse(code = 404, message = "Item not found")
     })
     @Path("/{id}")
-    public Response deleteTrack(@PathParam("id") int id) {
-        Track t = this.tm.getTrack(id);
+    public Response deleteItem(@PathParam("id") int id) {
+        Item t = this.gm.getItem(id);
         if (t == null) return Response.status(404).build();
-        else this.tm.deleteTrack(id);
+        else this.gm.deleteItem(id);
         return Response.status(201).build();
     }
 
     @PUT
-    @ApiOperation(value = "update a Track", notes = "asdasd")
+    @ApiOperation(value = "update a Item", notes = "asdasd")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful"),
-            @ApiResponse(code = 404, message = "Track not found")
+            @ApiResponse(code = 404, message = "Item not found")
     })
     @Path("/")
-    public Response updateTrack(Track track) {
-        Track t = this.tm.getTrack(track.getId());
+    public Response updateItem(Item item) {
+        Item t = this.gm.getItem(item.getId());
         if (t == null) return Response.status(404).build();
-        else this.tm.updateTrack(t);
+        else this.gm.updateItem(t);
         return Response.status(201).build();
     }
 
 
 
     @POST
-    @ApiOperation(value = "create a new Track", notes = "asdasd")
+    @ApiOperation(value = "create a new Item", notes = "asdasd")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response=Track.class),
+            @ApiResponse(code = 201, message = "Successful", response=Item.class),
     })
 
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response newTrack(Track track) {
-        this.tm.addTrack(track);
-        return Response.status(201).entity(track).build();
+    public Response newItem(Item item   ) {
+        this.gm.addItem(item);
+        return Response.status(201).entity(item).build();
     }
 
 }

@@ -8,12 +8,12 @@ public class Item {
     int strength;   // fuerza del impacto
     int cadency;    // cadencia del impacto
     int life;       // unidades de salud que aumenta
-    static int lastId;
+    static int lastId = 1;
 
     public Item() {this.setId(lastId++);}
 
     public Item(int id, String name, int type, int strength, int cadency, int life) {
-        this.id = id;
+        this.id = lastId++;
         this.name = name;
         this.type = type;
         this.strength = strength;

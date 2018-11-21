@@ -4,24 +4,31 @@ public class User {
     int id;     // identification number
     String name;  // username
     String password;       //user password (hash)
-    static int lastId;
+    int score = 0;
+    static int lastId = 0;
 
-    public User() {this.setId(lastId++);}
+    public User() {this.id = lastId++;}
 
-    public User(int id, String name, String password) {
-        this.id = id;
-        this.name = name;
-        this.password = password;
+    public User(String name, String password, int score) {
+        this();
+        this.setName(name);
+        this.setPassword(password);
+        this.setScore(score);
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public void setId(int id) {}
 
     public String getName() {
         return name;

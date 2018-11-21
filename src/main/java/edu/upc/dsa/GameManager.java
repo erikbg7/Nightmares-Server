@@ -13,15 +13,23 @@ public interface GameManager {
     public void updateItem(Item t);
     public int sizeItems();
 
-    ////////////  MAP METHODS  //////////////
-
-    ////////////  AUTHENTICATION METHODS  //////////////
-    public void addUser(int id, String name, String password);
+    ////////////  USER METHODS  //////////////
+    public List<User> usersOrderedByScore();
+    public void addUser(String name, String password, int score);
     public void addUser(User u);
     public User getUser(int i);
+    public boolean checkLogin(String user, String pass);
     public List<User> findAllUsers();
     public void deleteUser(int id);
-    public void updateUser(User u);
     public int sizeUsers();
+
+
+    ////////////  MAP METHODS  //////////////
+    public void addMap(int id, String description, int pX, int pY);
+    public void addMap(Map m);
+    public Map getMap(int i);
+    public List<Map> listOfMaps();
+    public int sizeMaps();
+    public void userPosition(int idUser, int idMap, int positionX, int positionY);
 
 }

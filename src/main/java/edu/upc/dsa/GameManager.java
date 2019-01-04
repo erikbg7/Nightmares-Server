@@ -1,8 +1,15 @@
 package edu.upc.dsa;
 
+import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParameterList;
+
 import java.util.List;
 
 public interface GameManager {
+
+    public void add(Object o);
+    public void add(ParameterList pl);
+    public int size(Object o);
+
 
     ////////////  ITEM METHODS  //////////////
     public void addItem(int id, String name, int type, int strength, int cadency, int life);

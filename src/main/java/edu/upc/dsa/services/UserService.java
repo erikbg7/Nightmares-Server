@@ -101,16 +101,5 @@ public class UserService {
         return Response.status(201).entity(user).build();
     }
 
-    @GET
-    @Path("/Login/{username},{password}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String checkLogin(@PathParam("username") String username, @PathParam("password") String password) {
-        boolean ok = this.gm.checkLogin(username, password);
-        if (!ok) return "Ur not welcomed";
-        else{
-            return "Hello sir!";
-        }
-    }
-
 }
 

@@ -1,5 +1,7 @@
 package edu.upc.dsa;
 
+import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParameterList;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -24,6 +26,33 @@ public class GameManagerImpl implements GameManager {
         if (instance==null) instance = new GameManagerImpl();
         return instance;
     }
+
+
+    public void add(Object o){
+        switch (o.getClass().toString()){
+            case "Item": this.items.add((Item) o); break;
+            case "User": this.users.add((User) o); break;
+            case "Map": this.maps.add((Map) o); break;
+        }
+    }
+
+    public void add(ParameterList pl){
+    }
+
+    public int size(Object o){
+        int size = 0;
+        switch (o.getClass().toString()){
+            case "Item": size = this.items.size(); break;
+            case "User": size = this.users.size(); break;
+            case "Map": size = this.maps.size(); break;
+        }
+        return size;
+    }
+
+
+
+
+
 
     /////////////////////////////////////////////////////////////////////////
     ////////////////////////////ITEMS////////////////////////////////////////////

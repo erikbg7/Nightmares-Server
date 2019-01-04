@@ -31,7 +31,7 @@ public class ItemService {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful", response = Item.class, responseContainer="List"),
     })
-    @Path("/")
+    @Path("/list")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getItems() {
 
@@ -94,7 +94,7 @@ public class ItemService {
 
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response newItem(Item item   ) {
+    public Response newItem(Item item) {
         this.gm.addItem(item);
         return Response.status(201).entity(item).build();
     }

@@ -1,6 +1,7 @@
 package edu.upc.dsa;
 
 import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParameterList;
+import edu.upc.dsa.exceptions.UserNotFoundException;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public interface GameManager {
     public void addUser(String name, String password, int score);
     public void addUser(User u);
     public User getUser(int i);
-    public boolean checkLogin(String user, String pass);
+    public boolean checkLogin(String user, String pass) throws UserNotFoundException;
     public List<User> findAllUsers();
     public void deleteUser(int id);
     public int sizeUsers();

@@ -1,6 +1,7 @@
 package edu.upc.dsa;
 
 import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParameterList;
+import edu.upc.dsa.exceptions.UserNotFoundException;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -110,7 +111,7 @@ public class GameManagerImpl implements GameManager {
         return u;
     }
 
-    public boolean checkLogin(String username, String password) {
+    public boolean checkLogin(String username, String password) throws UserNotFoundException {
 
         try{
             boolean ok = false;
@@ -120,8 +121,7 @@ public class GameManagerImpl implements GameManager {
             }
             return ok;
         }catch (Exception e){
-            e.printStackTrace();
-            return false;
+            throw new UserNotFoundException();
         }
 
 

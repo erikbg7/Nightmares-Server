@@ -4,6 +4,7 @@ import edu.upc.dsa.GameManager;
 import edu.upc.dsa.GameManagerImpl;
 import edu.upc.dsa.LogIn;
 import edu.upc.dsa.User;
+import edu.upc.dsa.exceptions.UserNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -41,13 +42,19 @@ public class AuthService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response checkLoginV3(LogIn auth) {
 
+
+
+
         try{
             boolean ok = this.gm.checkLogin(auth.getName(), auth.getPassword());
             if (!ok) return Response.status(400).build();
             else{
                 return Response.status(200).build();
             }
-        } catch
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+            return Response.status(404).build();
+        }
 
 
     }

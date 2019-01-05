@@ -2,11 +2,9 @@ package edu.upc.dsa;
 
 import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParameterList;
 import edu.upc.dsa.exceptions.NameAlreadyInUseException;
-import edu.upc.dsa.exceptions.UserNotFoundException;
 import edu.upc.dsa.management.FactorySession;
 import edu.upc.dsa.management.Session;
 import edu.upc.dsa.models.Item;
-import edu.upc.dsa.models.Map;
 import edu.upc.dsa.models.User;
 
 import java.util.Collections;
@@ -19,14 +17,12 @@ public class GameManagerImpl implements GameManager {
     private static GameManager instance;
     protected List<Item> items;
     protected List<User> users;
-    protected List<Map> maps;
 
     private static Logger logger = Logger.getLogger(GameManagerImpl.class.getName());
 
     private GameManagerImpl() {
         this.items = new LinkedList<>();
         this.users = new LinkedList<>();
-        this.maps = new LinkedList<>();
     }
 
     public static GameManager getInstance() {
@@ -39,7 +35,6 @@ public class GameManagerImpl implements GameManager {
         switch (o.getClass().toString()){
             case "Item": this.items.add((Item) o); break;
             case "User": this.users.add((User) o); break;
-            case "Map": this.maps.add((Map) o); break;
         }
     }
 
@@ -51,7 +46,6 @@ public class GameManagerImpl implements GameManager {
         switch (o.getClass().toString()){
             case "Item": size = this.items.size(); break;
             case "User": size = this.users.size(); break;
-            case "Map": size = this.maps.size(); break;
         }
         return size;
     }
@@ -177,34 +171,10 @@ public class GameManagerImpl implements GameManager {
         this.users.remove(id);
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    /////////////////////////////MAPS////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////
 
-    public int sizeMaps() {
-        return this.maps.size();
-    }
-    public void addMap(Map m) {
-        this.maps.add(m);
-    }
-    public void addMap(int id, String description, int pX, int pY) {
-        this.addMap(new Map(id, description, pX, pY));
-    }
-    public Map getMap(int i) {
-        Map m=null;
-        if (i<this.maps.size()) m = this.maps.get(i);
-        return m;
-    }
-    public List<Map> listOfMaps() {
-        return this.maps;
-    }
 
     public void clear() {
         instance = null;
     }
 
-    @Override
-    public void userPosition(int idUser, int idMap, int positionX, int positionY) {
-
-    }
 }

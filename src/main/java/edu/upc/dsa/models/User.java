@@ -1,4 +1,4 @@
-package edu.upc.dsa;
+package edu.upc.dsa.models;
 
 public class User {
     int id;     // identification number

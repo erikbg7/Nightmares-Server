@@ -2,7 +2,8 @@ package edu.upc.dsa.services;
 
 import edu.upc.dsa.GameManager;
 import edu.upc.dsa.GameManagerImpl;
-import edu.upc.dsa.User;
+import edu.upc.dsa.models.Map;
+import edu.upc.dsa.models.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -31,7 +32,7 @@ public class MapService {
     @GET
     @ApiOperation(value = "get all Maps", notes = "asdasd")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = edu.upc.dsa.Map.class, responseContainer="List"),
+            @ApiResponse(code = 201, message = "Successful", response = Map.class, responseContainer="List"),
     })
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)

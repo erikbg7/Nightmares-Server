@@ -1,7 +1,11 @@
 package edu.upc.dsa;
 
 import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParameterList;
+import edu.upc.dsa.exceptions.NameAlreadyInUseException;
 import edu.upc.dsa.exceptions.UserNotFoundException;
+import edu.upc.dsa.models.Item;
+import edu.upc.dsa.models.Map;
+import edu.upc.dsa.models.User;
 
 import java.util.List;
 
@@ -26,7 +30,8 @@ public interface GameManager {
     public void addUser(String name, String password, int score);
     public void addUser(User u);
     public User getUser(int i);
-    public boolean checkLogin(String user, String pass) throws UserNotFoundException;
+    //public boolean checkLogin(String user, String pass) throws UserNotFoundException;
+    public void signUp(String username, String password) throws NameAlreadyInUseException;
     public List<User> findAllUsers();
     public void deleteUser(int id);
     public int sizeUsers();
@@ -40,4 +45,5 @@ public interface GameManager {
     public int sizeMaps();
     public void userPosition(int idUser, int idMap, int positionX, int positionY);
 
+    void clear();
 }

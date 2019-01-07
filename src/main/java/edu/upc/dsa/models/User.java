@@ -1,17 +1,17 @@
 package edu.upc.dsa.models;
 
 public class User {
-    int id;     // identification number
-    String name;  // username
+    int ID;     // identification number
+    String username;  // username
     String password;       //user password (hash)
     int score = 0;
-    static int lastId = 0;
+    //static int lastId = 0;
 
-    public User() {this.id = lastId++;}
+    public User() {}//this.ID = lastId++;}
 
-    public User(String name, String password, int score) {
+    public User(String username, String password, int score) {
         this();
-        this.setName(name);
+        this.setUsername(username);
         this.setPassword(password);
         this.setScore(score);
     }
@@ -24,18 +24,21 @@ public class User {
         this.score = score;
     }
 
-    public int getId() {
-        return id;
+    public int getID() {
+        return ID;
     }
 
-    public void setId(int id) {}
-
-    public String getName() {
-        return name;
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
-    public void setName(String name) {
-        this.name = name;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -46,11 +49,11 @@ public class User {
         this.password = password;
     }
 
-    public static int getLastId() {
+    /*public static int getLastId() {
         return lastId;
     }
 
     public static void setLastId(int lastId) {
         User.lastId = lastId;
-    }
+    }*/
 }

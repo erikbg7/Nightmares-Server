@@ -10,12 +10,35 @@ public class QueryHelper {
 
         String [] fields = ObjectHelper.getFields(entity);
 
-        sb.append("ID");
+        ////////////////
+        for (String field: fields) {
+            if(field.compareTo(("ID")) == 0) {sb.append(field);}
+            else {sb.append(", ").append(field);}
+        }
+
+        sb.append(") VALUES (");
+
+        System.out.println(sb);
+
+        for (String field: fields) {
+            if(field.compareTo(("ID")) == 0) {sb.append("?");}
+            else {sb.append(", ?");}
+        }
+
+        sb.append(")");
+        System.out.println(sb);
+
+        return sb.toString();
+    }
+        ////////////////
+        /*sb.append("ID");
         for (String field: fields) {
             sb.append(", ").append(field);
         }
 
         sb.append(") VALUES (?");
+
+        System.out.println(sb);
 
         for (String field: fields) {
             sb.append(", ?");
@@ -24,7 +47,7 @@ public class QueryHelper {
         sb.append(")");
 
         return sb.toString();
-    }
+    }*/
 
     public static String createQuerySELECT(Object entity) {
         StringBuffer sb = new StringBuffer();

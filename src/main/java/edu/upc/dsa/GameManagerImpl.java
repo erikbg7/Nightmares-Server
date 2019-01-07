@@ -2,6 +2,7 @@ package edu.upc.dsa;
 
 import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParameterList;
 import edu.upc.dsa.exceptions.NameAlreadyInUseException;
+import edu.upc.dsa.exceptions.UserNotFoundException;
 import edu.upc.dsa.management.FactorySession;
 import edu.upc.dsa.management.Session;
 import edu.upc.dsa.models.Item;
@@ -11,6 +12,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GameManagerImpl implements GameManager {
@@ -111,21 +113,39 @@ public class GameManagerImpl implements GameManager {
         return u;
     }
 
-    /*public boolean checkLogin(String username, String password) throws UserNotFoundException {
+
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    //Login debe devolver un User o una ind con la Id?
+    public boolean logIn(String username, String password) throws UserNotFoundException {
+        Session session = null;
 
         try{
-            boolean ok = false;
+            session = FactorySession.openSession();
+            int userID = session.checkLogIn(User.class, username, password);
+            if(userID != -1) {
+                System.out.println("HOLA AMOIGO  "+username +" " + password);
 
-            for(User u:users){
-                if(u.getName().equals(username) && u.getPassword().equals(password)){ok = true;}
+                //session.save(user);
             }
-            return ok;
-        }catch (Exception e){
-            throw new UserNotFoundException();
-        }
-    }*/
-    //public boolean checkLogin(String username, String password) throws UserNotFoundException {}
+            else{
+                //System.out.println("ADIOS AMOIGO");
 
+                //throw new NameAlreadyInUseException();
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace(); //"Error trying to open the session: " +e.getMessage());
+            throw new UserNotFoundException();
+            //throw new MySqlErrorException();
+        }
+        finally{
+            session.close();
+        }
+        return false;
+    }
 
     public void signUp(String username, String password) throws NameAlreadyInUseException {
 
@@ -134,17 +154,42 @@ public class GameManagerImpl implements GameManager {
         try{
             session = FactorySession.openSession();
             User user = new User(username, password, 0);
+            //System.out.println(username + " " + user.getUsername() + user.getPassword()+"");
             boolean exists = session.checkNameAlreadyInUse(User.class, username);
             if(exists == false) {
+                //System.out.println("HOLA AMOIGO  "+username +" " + user.getPassword());
+
                 session.save(user);
             }
             else{
+                //System.out.println("ADIOS AMOIGO");
+
                 throw new NameAlreadyInUseException();
             }
         }
         catch(Exception e){
             e.printStackTrace(); //"Error trying to open the session: " +e.getMessage());
             throw new NameAlreadyInUseException();
+            //throw new MySqlErrorException();
+        }
+        finally{
+            session.close();
+        }
+    }
+
+    public List<User> findAllUsers() {
+
+        Session session = null;
+
+        try{
+            session = FactorySession.openSession();
+            List<User> usersList = session.findAll(User.class);
+            return usersList;
+        }
+        catch(Exception e){
+            e.printStackTrace(); //"Error trying to open the session: " +e.getMessage());
+            return null;
+            //throw new MySqlErrorException();
         }
         finally{
             session.close();
@@ -152,20 +197,20 @@ public class GameManagerImpl implements GameManager {
     }
 
     public List<User> usersOrderedByScore() {
-        //log.log(Level.INFO, "SORTING BY SALES Products before sorting: \n"+ products.toString());
-        List<User> sortedList = new LinkedList<User>(users);
+
+        List<User> sortedList = new LinkedList<User>(this.findAllUsers());
         Collections.sort(sortedList, new Comparator<User>() {
             public int compare(User u1, User u2) {
                 return Integer.compare(u2.getScore(), u1.getScore());
             }
         });
-        //log.log(Level.INFO, "Products after sorting: \n"+ sortedList.toString());
         return sortedList;
     }
 
-    public List<User> findAllUsers() {
-        return this.users;
-    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
     @Override
     public void deleteUser(int id) {
         this.users.remove(id);

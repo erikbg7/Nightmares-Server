@@ -16,6 +16,7 @@ public class ObjectHelper {
         int i=0;
 
         for (Field f: fields) sFields[i++]=f.getName();
+            //if(f.getName().compareTo("ID")!= 0) {sFields[i++]=f.getName();}
 
         return sFields;
 

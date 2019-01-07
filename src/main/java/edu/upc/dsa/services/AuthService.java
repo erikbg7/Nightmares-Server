@@ -42,7 +42,7 @@ public class AuthService {
 
 
         try{
-            boolean ok = this.gm.checkLogin(auth.getName(), auth.getPassword());
+            boolean ok = this.gm.logIn(auth.getName(), auth.getPassword());
             if (!ok) return Response.status(400).build();
             else{
                 return Response.status(200).build();

@@ -28,7 +28,8 @@ public class SessionImpl implements Session{
         try {
             pstm = conn.prepareStatement(insertQuery);
             pstm.setObject(1,0);
-            int i = 2;
+            int i = 1;
+            //Before getFields fix in save function this value were equal to 2
 
             for (String field: ObjectHelper.getFields(entity)) {
                 pstm.setObject(i++, ObjectHelper.getter(entity, field));
@@ -214,7 +215,7 @@ public class SessionImpl implements Session{
 
 
     public boolean checkNameAlreadyInUse(Class theClass, String username){
-        String selectQuery = QueryHelper.createQueryCHECKLOGIN(theClass);
+        String selectQuery = QueryHelper.createQueryCHECKNAMEINUSE(theClass);
 
         ResultSet rs;
         PreparedStatement pstm;
@@ -240,4 +241,33 @@ public class SessionImpl implements Session{
             return true;
     }
 
+
+    public int checkLogIn(Class theClass, String username, String password){
+        String selectQuery = QueryHelper.createQueryCHECKLOGIN(theClass);
+
+        ResultSet rs;
+        PreparedStatement pstm;
+
+        boolean empty = true;
+
+        try {
+            pstm = conn.prepareStatement(selectQuery);
+            pstm.setObject(1, username);
+            pstm.setObject(2, password);
+
+            rs = pstm.executeQuery();
+
+            while(rs.next()) {
+                empty = false;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if(empty == true)
+            return -1;
+        else
+            return 1;
+    }
 }

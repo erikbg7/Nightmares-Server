@@ -14,5 +14,6 @@ public interface Session<E> {
     List<Object> query(String query, Class theClass, HashMap params);
 
     boolean checkNameAlreadyInUse(Class theClass, String username);
+    int checkLogIn(Class theClass, String username, String password);
 
 }

@@ -5,7 +5,9 @@ import edu.upc.dsa.exceptions.NameAlreadyInUseException;
 import edu.upc.dsa.exceptions.UserNotFoundException;
 import edu.upc.dsa.management.FactorySession;
 import edu.upc.dsa.management.Session;
+import edu.upc.dsa.models.Game;
 import edu.upc.dsa.models.Item;
+import edu.upc.dsa.models.Score;
 import edu.upc.dsa.models.User;
 
 import java.util.Collections;
@@ -19,12 +21,14 @@ public class GameManagerImpl implements GameManager {
     private static GameManager instance;
     protected List<Item> items;
     protected List<User> users;
+    protected  List<Game> games;
 
     private static Logger logger = Logger.getLogger(GameManagerImpl.class.getName());
 
     private GameManagerImpl() {
         this.items = new LinkedList<>();
         this.users = new LinkedList<>();
+        this.games = new LinkedList<>();
     }
 
     public static GameManager getInstance() {
@@ -112,39 +116,33 @@ public class GameManagerImpl implements GameManager {
         if (i<this.users.size()) u = this.users.get(i);
         return u;
     }
-
-
-
-
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    //Login debe devolver un User o una ind con la Id?
-    public boolean logIn(String username, String password) throws UserNotFoundException {
+    //Login debe devolver un User o un int con la Id?
+    public boolean logIn(String username, String password) throws UserNotFoundException{
         Session session = null;
+        boolean log = false;
+
 
         try{
             session = FactorySession.openSession();
             int userID = session.checkLogIn(User.class, username, password);
             if(userID != -1) {
                 System.out.println("HOLA AMOIGO  "+username +" " + password);
-
+                log = true;
                 //session.save(user);
             }
             else{
-                //System.out.println("ADIOS AMOIGO");
+                System.out.println("ADIOS AMOIGO");
+                throw new UserNotFoundException();
 
-                //throw new NameAlreadyInUseException();
             }
         }
         catch(Exception e){
             e.printStackTrace(); //"Error trying to open the session: " +e.getMessage());
-            throw new UserNotFoundException();
-            //throw new MySqlErrorException();
         }
         finally{
             session.close();
         }
-        return false;
+        return log;
     }
 
     public void signUp(String username, String password) throws NameAlreadyInUseException {
@@ -184,6 +182,7 @@ public class GameManagerImpl implements GameManager {
         try{
             session = FactorySession.openSession();
             List<User> usersList = session.findAll(User.class);
+            System.out.println(usersList.size());
             return usersList;
         }
         catch(Exception e){
@@ -196,7 +195,7 @@ public class GameManagerImpl implements GameManager {
         }
     }
 
-    public List<User> usersOrderedByScore() {
+    public List<Score> usersOrderedByScore() {
 
         List<User> sortedList = new LinkedList<User>(this.findAllUsers());
         Collections.sort(sortedList, new Comparator<User>() {
@@ -204,17 +203,33 @@ public class GameManagerImpl implements GameManager {
                 return Integer.compare(u2.getScore(), u1.getScore());
             }
         });
-        return sortedList;
+        List<Score> scoresList = new LinkedList<>();
+        for(User u: sortedList){
+            scoresList.add(new Score(u.getUsername(), u.getScore()));
+        }
+        return scoresList;
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
     @Override
     public void deleteUser(int id) {
         this.users.remove(id);
     }
+
+    /////////////////////////////////////////////////////////////////////////
+    ////////////////////////////GAMES////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+
+    public List<Game> findAllGames(){
+        return games;
+    }
+    public void addGame(int ID, int userid, String username, int score, int kills, int duration){
+        this.addGame(new Game(ID, userid, username, score, kills, duration));
+    }
+    public void addGame(Game g){
+        this.games.add (g);
+    }
+
+
+
 
 
 

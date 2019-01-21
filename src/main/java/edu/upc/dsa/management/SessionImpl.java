@@ -29,7 +29,7 @@ public class SessionImpl implements Session{
             pstm = conn.prepareStatement(insertQuery);
             pstm.setObject(1,0);
             int i = 1;
-            //Before getFields fix in save function this value were equal to 2
+            //Before getFields fix in save function this value was equal to 2
 
             for (String field: ObjectHelper.getFields(entity)) {
                 pstm.setObject(i++, ObjectHelper.getter(entity, field));
@@ -172,7 +172,9 @@ public class SessionImpl implements Session{
                 Field[] fields = theClass.getDeclaredFields();
                 rs.getString(1);
                 for (int i = 0; i<fields.length; i++){
-                    ObjectHelper.setter(entity, fields[i].getName(), rs.getObject(i + 2));
+                    ObjectHelper.setter(entity, fields[i].getName(), rs.getObject(i + 1));
+                    //Value of i was 2 before fix for succesful list call
+                    System.out.print(i);
                 }
 
                 listOfObjects.add(entity);
@@ -248,7 +250,7 @@ public class SessionImpl implements Session{
         ResultSet rs;
         PreparedStatement pstm;
 
-        boolean empty = true;
+        int logId = -1;
 
         try {
             pstm = conn.prepareStatement(selectQuery);
@@ -258,16 +260,13 @@ public class SessionImpl implements Session{
             rs = pstm.executeQuery();
 
             while(rs.next()) {
-                empty = false;
+                logId = rs.getInt(1);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        if(empty == true)
-            return -1;
-        else
-            return 1;
+        return logId;
     }
 }

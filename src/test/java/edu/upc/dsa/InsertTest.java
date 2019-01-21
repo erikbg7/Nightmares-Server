@@ -12,8 +12,8 @@ public class InsertTest {
     @Test
     public void insertUser2DDBB() throws NameAlreadyInUseException, UserNotFoundException {
         this.GM = GameManagerImpl.getInstance();
-        this.GM.signUp("LoLito43", "lolo");
-        //Assert.assertEquals(true, this.GM.logIn("LoLito2", "lolo"));
+        //this.GM.signUp("LoLito4444", "lolo");
+        Assert.assertEquals(true, this.GM.logIn("LoLito4444", "lolo"));
         this.GM.clear();
     }
 }

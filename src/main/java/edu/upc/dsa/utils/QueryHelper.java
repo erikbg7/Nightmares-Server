@@ -108,7 +108,7 @@ public class QueryHelper {
     public static String findAllQuery(Class theClass) {
         StringBuffer sb = new StringBuffer();
         sb.append("SELECT * FROM ").append(theClass.getSimpleName());
-
+        System.out.println(sb.toString());
         return sb.toString();
     }
 

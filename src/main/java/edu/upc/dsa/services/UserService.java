@@ -3,6 +3,7 @@ package edu.upc.dsa.services;
 import edu.upc.dsa.GameManager;
 import edu.upc.dsa.GameManagerImpl;
 import edu.upc.dsa.exceptions.NameAlreadyInUseException;
+import edu.upc.dsa.models.Score;
 import edu.upc.dsa.models.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,6 +14,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Api(value = "/users", description = "Endpoint to User Service")
@@ -30,16 +33,20 @@ public class UserService {
     }
 
     @GET
-    @ApiOperation(value = "get Users by total score", notes = "asdasd")
+    @ApiOperation(value = "get Users by total score", notes = "Name and total score of each user")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = User.class, responseContainer="List"),
+            @ApiResponse(code = 201, message = "Successful", response = Score.class, responseContainer="List"),
     })
     @Path("/byScore")
     @Produces(MediaType.APPLICATION_JSON)
     public Response usersByScore() {
 
-        List<User> usersByScore = this.gm.usersOrderedByScore();
-        GenericEntity<List<User>> entity = new GenericEntity<List<User>>(usersByScore) {};
+        List<Score> usersByScore = this.gm.usersOrderedByScore();
+        //List<Score> scores = new ArrayList<>();
+        /*for(User u: usersByScore){
+            scores.add(new Score(u.getUsername(), u.getScore()));
+        }*/
+        GenericEntity<List<Score>> entity = new GenericEntity<List<Score>>(usersByScore) {};
         return Response.status(201).entity(entity).build()  ;
     }
 
@@ -54,7 +61,7 @@ public class UserService {
     public Response getUsers() {
 
         List<User> users = this.gm.findAllUsers();
-
+        System.out.println(users.size());
         GenericEntity<List<User>> entity = new GenericEntity<List<User>>(users) {};
         return Response.status(201).entity(entity).build()  ;
 
@@ -70,8 +77,8 @@ public class UserService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUser(@PathParam("id") int id) {
         User u = this.gm.getUser(id);
-        if (u == null) return Response.status(404).build();
-        else  return Response.status(201).entity(u).build();
+        if (u == null) return Response.status(404).header("Access-Control-Allow-Origin", "*").build();
+        else  return Response.status(201).entity(u).header("Access-Control-Allow-Origin", "*").build();
     }
 
     @DELETE
@@ -88,24 +95,7 @@ public class UserService {
         return Response.status(201).build();
     }
 
-    @POST
-    @ApiOperation(value = "create a new User", notes = "asdasd")
-    @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response=User.class),
-    })
 
-    @Path("/")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response newUser(User user) throws NameAlreadyInUseException {
-        //this.gm.addUser(user);
-        try{
-            this.gm.signUp(user.getUsername(), user.getPassword());
-            return Response.status(201).entity(user).build();
-        }catch (Exception e){
-            throw new NameAlreadyInUseException();
-        }
-
-    }
 
 }
 

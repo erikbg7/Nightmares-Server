@@ -1,6 +1,5 @@
 package edu.upc.dsa;
 
-import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParameterList;
 import edu.upc.dsa.exceptions.NameAlreadyInUseException;
 import edu.upc.dsa.exceptions.UserNotFoundException;
 import edu.upc.dsa.management.FactorySession;
@@ -14,7 +13,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GameManagerImpl implements GameManager {
@@ -42,9 +40,6 @@ public class GameManagerImpl implements GameManager {
             case "Item": this.items.add((Item) o); break;
             case "User": this.users.add((User) o); break;
         }
-    }
-
-    public void add(ParameterList pl){
     }
 
     public int size(Object o){

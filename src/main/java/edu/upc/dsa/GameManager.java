@@ -1,6 +1,5 @@
 package edu.upc.dsa;
 
-import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParameterList;
 import edu.upc.dsa.exceptions.NameAlreadyInUseException;
 import edu.upc.dsa.exceptions.UserNotFoundException;
 import edu.upc.dsa.models.Game;
@@ -12,9 +11,7 @@ import java.util.List;
 
 public interface GameManager {
 
-    public void add(Object o);
-    public void add(ParameterList pl);
-    public int size(Object o);
+
 
 
     ////////////  ITEM METHODS  //////////////
